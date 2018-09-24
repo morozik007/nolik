@@ -4,16 +4,27 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import App from './App';
 
-const initialState = [
-  'x'
-];
+const initialState = {
+  currentMove: '-',
+  field: [
+    ['','',''],
+    ['','',''],
+    ['','','']
+  ]
+};
 
 function move(state = initialState, action) {
   if (action.type === 'ADD_MOVE') {
-    return [
-      ...state,
-      action.payload
-    ];
+    const field = state.field
+      .map((row, i) => i === action.i
+       ? (
+         row.map((value, j) => j === action.j ? action.player : value)
+       )
+       : row);
+    return {
+      field,
+      currentMove: action.player
+    };
   }
   return state;
 }
